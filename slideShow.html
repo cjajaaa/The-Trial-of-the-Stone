@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Story Slideshow — The Trial of the Stone</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+	<style>
+		/* Root variables and imports */
+		:root {
+			--color-bg: #fdfbf7;
+			--color-text: #2b2b2b;
+			--color-muted: #6b6b6b;
+			--color-accent: #7a0b0b;
+			--color-accent-strong: #5b0707;
+			--color-white: #ffffff;
+			--font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+			--font-heading: "Merriweather", Georgia, "Times New Roman", serif;
+		}
+
+		/* Base reset */
+		* { box-sizing: border-box; }
+		html, body { height: 100%; margin: 0; padding: 0; }
+		body {
+			background: linear-gradient(135deg, rgba(253,251,247,1) 0%, rgba(253,251,247,0.95) 100%);
+			color: var(--color-text);
+			font-family: var(--font-body);
+			font-size: 18px;
+			line-height: 1.6;
+		}
+
+		/* Header / Navigation */
+		.site-header {
+			position: sticky;
+			top: 0;
+			z-index: 40;
+			backdrop-filter: blur(4px);
+			background: linear-gradient(180deg, rgba(253,251,247,0.98), rgba(253,251,247,0.95));
+			box-shadow: 0 2px 12px rgba(40,30,20,0.06);
+		}
+
+		.container {
+			width: 100%;
+			max-width: 1100px;
+			margin: 0 auto;
+			padding: 0 1rem;
+		}
+
+		.header-inner {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+			padding: 0.75rem 0;
+		}
+
+		.brand {
+			font-family: var(--font-heading);
+			color: var(--color-text);
+			text-decoration: none;
+			font-weight: 700;
+			font-size: 1rem;
+		}
+
+		.nav-toggle { display: none; }
+		.nav-toggle-label {
+			display: none;
+			width: 42px;
+			height: 36px;
+			cursor: pointer;
+			position: relative;
+		}
+		.nav-toggle-label span {
+			display: block;
+			height: 3px;
+			background: var(--color-text);
+			margin: 6px 0;
+			border-radius: 3px;
+			transition: transform .18s ease, opacity .18s ease;
+		}
+
+		.site-nav ul {
+			display: flex;
+			gap: 1rem;
+			align-items: center;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.site-nav a {
+			padding: 0.45rem 0.6rem;
+			border-radius: 6px;
+			color: var(--color-text);
+			text-decoration: none;
+			transition: color .18s ease, background .18s ease;
+		}
+
+		.site-nav a:hover, .site-nav a:focus {
+			background: rgba(0,0,0,0.03);
+			color: var(--color-accent-strong);
+		}
+
+		.site-nav a.active {
+			color: var(--color-accent);
+			font-weight: 600;
+		}
+
+		/* Main content area */
+		main {
+			padding: 2rem 0;
+		}
+
+		.page-hero {
+			padding: 2rem 0;
+			text-align: center;
+			background: linear-gradient(180deg, rgba(122,11,11,0.04) 0%, rgba(122,11,11,0.02) 100%);
+			border-bottom: 1px solid rgba(122,11,11,0.08);
+			margin-bottom: 2rem;
+		}
+
+		.page-hero h1 {
+			font-family: var(--font-heading);
+			font-size: clamp(2rem, 4.5vw, 3.25rem);
+			font-weight: 700;
+			color: var(--color-text);
+			margin: 0 0 0.5rem 0;
+		}
+
+		.page-hero .subtitle {
+			color: var(--color-muted);
+			font-size: 1.1rem;
+		}
+
+		/* Slideshow container */
+		.slideshow-wrapper {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 2rem 0;
+		}
+
+		.slide-container {
+			position: relative;
+			width: 90%;
+			max-width: 900px;
+			height: 650px;
+			background: var(--color-white);
+			border-radius: 12px;
+			overflow: hidden;
+			box-shadow: 0 8px 32px rgba(40,30,20,0.12);
+		}
+
+		.slides {
+			width: 100%;
+			height: 100%;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.slides img {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			object-fit: cover;
+			opacity: 0;
+			transition: opacity 0.5s ease-in-out;
+		}
+
+		.slides img.active {
+			opacity: 1;
+		}
+
+		/* Navigation arrows */
+		.arrow {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			padding: 12px 16px;
+			color: var(--color-white);
+			font-size: 24px;
+			font-weight: bold;
+			transition: all 0.3s ease;
+			border-radius: 6px;
+			user-select: none;
+			cursor: pointer;
+			z-index: 10;
+			background: rgba(122,11,11,0.4);
+		}
+
+		.arrow:hover {
+			background: var(--color-accent);
+			transform: translateY(-50%) scale(1.1);
+		}
+
+		.next {
+			right: 20px;
+		}
+
+		.prev {
+			left: 20px;
+		}
+
+		/* Dots/Indicators */
+		.dotsContainer {
+			position: absolute;
+			bottom: 15px;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 15;
+			display: flex;
+			gap: 8px;
+		}
+
+		.dot {
+			width: 12px;
+			height: 12px;
+			border: 2px solid var(--color-white);
+			border-radius: 50%;
+			display: inline-block;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			background: rgba(255,255,255,0.4);
+		}
+
+		.dot:hover {
+			background: rgba(255,255,255,0.7);
+		}
+
+		.dot.active {
+			background: var(--color-accent);
+			border-color: var(--color-accent);
+			width: 32px;
+			border-radius: 12px;
+		}
+
+		/* Footer */
+		.site-footer {
+			padding: 2rem 0;
+			border-top: 1px solid rgba(0,0,0,0.04);
+			color: var(--color-muted);
+			font-size: 0.95rem;
+			text-align: center;
+			background: rgba(122,11,11,0.02);
+			margin-top: 3rem;
+		}
+
+		/* Responsive design */
+		@media (max-width: 760px) {
+			.nav-toggle-label { display: block; }
+			.site-nav {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 100%;
+				background: var(--color-bg);
+				padding: 0.75rem 1rem;
+				box-shadow: 0 10px 30px rgba(40,30,20,0.06);
+				opacity: 0;
+				pointer-events: none;
+				transform: translateY(-8px);
+				transition: opacity .18s ease, transform .18s ease;
+			}
+			.site-nav ul { flex-direction: column; gap: 0.25rem; }
+			.site-nav li { width: 100%; }
+			.site-nav a { display: block; width: 100%; }
+
+			.nav-toggle:checked + .nav-toggle-label + .site-nav {
+				opacity: 1;
+				pointer-events: auto;
+				transform: translateY(0);
+			}
+
+			.nav-toggle:checked + .nav-toggle-label span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+			.nav-toggle:checked + .nav-toggle-label span:nth-child(2) { opacity: 0; }
+			.nav-toggle:checked + .nav-toggle-label span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+			.slide-container {
+				height: 400px;
+				max-width: 95%;
+			}
+
+			.arrow {
+				padding: 10px 12px;
+				font-size: 18px;
+			}
+		}
+
+		@media (max-width: 480px) {
+			.slide-container {
+				height: 300px;
+			}
+
+			.arrow {
+				padding: 8px 10px;
+				font-size: 16px;
+			}
+
+			.dot {
+				width: 10px;
+				height: 10px;
+			}
+
+			.dot.active {
+				width: 28px;
+			}
+		}
+	</style>
+</head>
+<body class="page-slideshow">
+	<header class="site-header">
+		<div class="container header-inner">
+			<a class="brand" href="index.html">The Trial of the Stone</a>
+
+			<input id="nav-toggle" class="nav-toggle" type="checkbox" aria-label="Toggle navigation">
+			<label for="nav-toggle" class="nav-toggle-label" aria-hidden="true">
+				<span></span>
+				<span></span>
+				<span></span>
+			</label>
+
+			<nav class="site-nav" role="navigation" aria-label="Primary">
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="slideShow.html" class="active">Story</a></li>
+					<li><a href="cha.html">Characters</a></li>
+					<li><a href="about.html">About</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<main>
+
+		<section class="slideshow-wrapper">
+			<div class="slide-container">
+				<div class="slides">
+					<img src="1.png" class="active" alt="Slide 1">
+					<img src="2.png" alt="Slide 2">
+					<img src="3.png" alt="Slide 3">
+					<img src="4.png" alt="Slide 4">
+					<img src="5.png" alt="Slide 5">
+					<img src="6.png" alt="Slide 6">
+					<img src="7.png" alt="Slide 7">
+					<img src="8.png" alt="Slide 8">
+					<img src="9.png" alt="Slide 9">
+					<img src="10.png" alt="Slide 10">
+					<img src="11.png" alt="Slide 11">
+					<img src="12.png" alt="Slide 12">
+					<img src="13.png" alt="Slide 13">
+					<img src="14.png" alt="Slide 14">
+					<img src="15.png" alt="Slide 15">
+					<img src="16.png" alt="Slide 16">
+					<img src="17.png" alt="Slide 17">
+					<img src="18.png" alt="Slide 18">
+					<img src="19.png" alt="Slide 19">
+					<img src="20.png" alt="Slide 20">
+					<img src="21.png" alt="Slide 21">
+					<img src="28.png" alt="Slide 22">
+				</div>
+
+				<span class="arrow prev">&#10094;</span>
+				<span class="arrow next">&#10095;</span>
+
+				<div class="dotsContainer">
+					<div class="dot active" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+					<div class="dot" onclick="switchImage(this)"></div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="container">
+			 <p> Created By: Allea T. Caponpon & Maria Camille S. Sevilla</p>
+        <p> BSED ENGLISH 3101 (EED 312)</p>
+		</div>
+	</footer>
+
+	<script type="text/javascript">
+		// REMOVED: The line getting elementById('year') caused the crash because that ID doesn't exist.
+
+		// Access the Images (Specifically inside the slides container)
+		let slideImages = document.querySelectorAll('.slides img');
+		// Access the next and prev buttons
+		let next = document.querySelector('.next');
+		let prev = document.querySelector('.prev');
+		// Access the indicators
+		let dots = document.querySelectorAll('.dot');
+
+		var counter = 0;
+		let deletInterval; // Defined variable here for better scope handling
+
+		// Code for next button
+		next.addEventListener('click', slideNext);
+		function slideNext(){
+			slideImages[counter].classList.remove('active');
+			if(counter >= slideImages.length-1){
+				counter = 0;
+			}
+			else{
+				counter++;
+			}
+			slideImages[counter].classList.add('active');
+			indicators();
+		}
+
+		// Code for prev button
+		prev.addEventListener('click', slidePrev);
+		function slidePrev(){
+			slideImages[counter].classList.remove('active');
+			if(counter == 0){
+				counter = slideImages.length-1;
+			}
+			else{
+				counter--;
+			}
+			slideImages[counter].classList.add('active');
+			indicators();
+		}
+
+		// Auto sliding
+		function autoSliding(){
+			deletInterval = setInterval(timer, 4000);
+			function timer(){
+				slideNext();
+				indicators();
+			}
+		}
+		autoSliding();
+
+		// Stop auto sliding when mouse is over
+		const container = document.querySelector('.slide-container');
+		container.addEventListener('mouseover', function(){
+			clearInterval(deletInterval);
+		});
+
+		// Resume sliding when mouse is out
+		container.addEventListener('mouseout', autoSliding);
+
+		// Add and remove active class from the indicators
+		function indicators(){
+			for(i = 0; i < dots.length; i++){
+				dots[i].classList.remove('active');
+			}
+			dots[counter].classList.add('active');
+		}
+
+		// Add click event to the indicator
+		function switchImage(currentImage){
+			var imageId = Array.from(dots).indexOf(currentImage);
+			slideImages[counter].classList.remove('active');
+			counter = imageId;
+			slideImages[counter].classList.add('active');
+			indicators();
+		}
+	</script>
+</body>
+</html>

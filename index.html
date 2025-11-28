@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Trial of the Stone</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#home">The Trial of the Stone</a>
+
+        <input id="nav-toggle" class="nav-toggle" type="checkbox" aria-label="Toggle navigation">
+        <label for="nav-toggle" class="nav-toggle-label" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
+
+        <nav class="site-nav" role="navigation" aria-label="Primary">
+          <ul>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="slideShow.html">Story</a></li>
+            <li><a href="cha.html">Characters</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="home" class="hero-slider">
+        <div class="slider-container">
+          <div class="slider">
+            <div class="slide" style="background-image: url('1bg.png');"></div>
+
+          <div class="slider-overlay"></div>
+
+          <div class="hero-content">
+            <h1>The Trial of the Stone</h1>
+            <p class="subtitle">A Chinese Folktale</p>
+            <p><a class="btn btn--accent" href="slideShow.html">Start Reading</a></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="story" class="content-section">
+        <div class="container">
+          <h2>The Story</h2>
+          <p class="lead">Explore the tale of wisdom, justice, and an ancient stone that holds the key to truth.</p>
+          <p><a class="btn btn--accent" href="slideShow.html">View Slideshow →</a></p>
+        </div>
+      </section>
+
+      <section id="characters" class="content-section">
+        <div class="container">
+          <h2>Meet the Characters</h2>
+          <p class="lead">Discover the figures who shape this timeless tale.</p>
+          <p><a class="btn btn--accent" href="cha.html">View Characters →</a></p>
+        </div>
+      </section>
+
+      <section id="about" class="content-section">
+        <div class="container">
+          <h2>About the Folktale</h2>
+          <p class="lead">Learn about the synopsis of the story.</p>
+          <p><a class="btn btn--accent" href="about.html">Learn More →</a></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p> Created By: Allea T. Caponpon & Maria Camille S. Sevilla</p>
+        <p> BSED ENGLISH 3101 (EED 312)</p>
+      </div>
+    </footer>
+
+    <script>
+      // Set current year in footer
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Image slider functionality
+      let currentSlide = 0;
+      const slides = document.querySelectorAll('.slide');
+      const totalSlides = slides.length;
+
+      function showSlide(index) {
+        currentSlide = (index + totalSlides) % totalSlides;
+        document.querySelector('.slider').style.transform = `translateX(-${currentSlide * 100}%)`;
+      }
+
+      document.querySelector('.slider-next').addEventListener('click', () => showSlide(currentSlide + 1));
+      document.querySelector('.slider-prev').addEventListener('click', () => showSlide(currentSlide - 1));
+
+      // Auto-advance slides every 5 seconds
+      setInterval(() => showSlide(currentSlide + 1), 5000);
+
+<<<<<<< HEAD:Index.html
+      // Section navigation buttons
+      document.querySelectorAll('.slider-btn').forEach((btn, index) => {
+        btn.addEventListener('click', () => showSlide(index));
+      });
+    </script>
+  </body>
+</html>
+=======
+</html>
+>>>>>>> c71872d0ebcf1594bb7b24ca0f1b007672318788:index.html

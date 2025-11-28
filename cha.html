@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Characters</title>
+    <link rel="stylesheet" href="cha.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Navigation bar styles */
+        :root {
+            --color-bg: #fdfbf7;
+            --color-text: #2b2b2b;
+            --color-accent: #7a0b0b;
+            --color-accent-strong: #5b0707;
+            --font-heading: "Merriweather", Georgia, "Times New Roman", serif;
+            --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            backdrop-filter: blur(4px);
+            background: linear-gradient(180deg, rgba(253,251,247,0.98), rgba(253,251,247,0.95));
+            box-shadow: 0 2px 12px rgba(40,30,20,0.06);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .brand {
+            font-family: var(--font-heading);
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .nav-toggle { display: none; }
+        .nav-toggle-label {
+            display: none;
+            width: 42px;
+            height: 36px;
+            cursor: pointer;
+            position: relative;
+        }
+        .nav-toggle-label span {
+            display: block;
+            height: 3px;
+            background: var(--color-text);
+            margin: 6px 0;
+            border-radius: 3px;
+            transition: transform .18s ease, opacity .18s ease;
+        }
+
+        .site-nav ul {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .site-nav a {
+            padding: 0.45rem 0.6rem;
+            border-radius: 6px;
+            color: var(--color-text);
+            text-decoration: none;
+            transition: color .18s ease, background .18s ease;
+        }
+
+        .site-nav a:hover, .site-nav a:focus {
+            background: rgba(0,0,0,0.03);
+            color: var(--color-accent-strong);
+        }
+
+        .site-nav a.active {
+            color: var(--color-accent);
+            font-weight: 600;
+        }
+
+        @media (max-width: 760px) {
+            .nav-toggle-label { display: block; }
+            .site-nav {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 100%;
+                background: var(--color-bg);
+                padding: 0.75rem 1rem;
+                box-shadow: 0 10px 30px rgba(40,30,20,0.06);
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(-8px);
+                transition: opacity .18s ease, transform .18s ease;
+            }
+            .site-nav ul { flex-direction: column; gap: 0.25rem; }
+            .site-nav li { width: 100%; }
+            .site-nav a { display: block; width: 100%; }
+
+            .nav-toggle:checked + .nav-toggle-label + .site-nav {
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+
+            .nav-toggle:checked + .nav-toggle-label span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+            .nav-toggle:checked + .nav-toggle-label span:nth-child(2) { opacity: 0; }
+            .nav-toggle:checked + .nav-toggle-label span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a class="brand" href="index.html">The Trial of the Stone</a>
+
+            <input id="nav-toggle" class="nav-toggle" type="checkbox" aria-label="Toggle navigation">
+            <label for="nav-toggle" class="nav-toggle-label" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <nav class="site-nav" role="navigation" aria-label="Primary">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="slideShow.html">Story</a></li>
+                    <li><a href="cha.html" class="active">Characters</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- carousel -->
+    <div class="carousel">
+        <!-- list item -->
+        <div class="list">
+            <div class="item">
+                <img src="bata.png">
+                <div class="content">
+                    <div class="title">AH NIEW</div>
+                    
+                    <div class="des">
+                        <!-- lorem 50 -->
+                      <h1> A hardworking and innocent </h1>
+                         <h1> with a joyful spirit.  </h1> 
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="item">
+                <img src="lalaki.png">
+                <div class="content">
+                    <div class="title">PAW KONG</div>
+                    <div class="des">
+                         <h1> A kind-hearted, wise, and </h1>
+                         <h1> observant Mandarin Judge.  </h1> 
+               </div>
+                   
+                </div>
+            </div>
+            <div class="item">
+                <img src="matanda.png">
+                <div class="content">
+                    <div class="title">GRANDMOTHER</div>
+                    <div class="des">
+                        <h1> A loving, resilient, and </h1>
+                         <h1> hardworking old woman.  </h1> 
+                     </div>
+                    
+                </div>
+            </div>
+           
+        </div>
+        <!-- list thumnail -->
+        <div class="thumbnail">
+            <div class="item">
+                <img src="bata.png">
+                <div class="content">
+                    <div class="title">
+                        Ah Niew
+                    </div>
+                    <div class="description">
+                    
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="lalaki.png">
+                <div class="content">
+                    <div class="title">
+                        Paw Kong
+                    </div>
+                    <div class="description">
+
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="matanda.png">
+                <div class="content">
+                    <div class="title">
+                        Grandmother
+                    </div>
+                    <div class="description">
+                        
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+        <!-- next prev -->
+
+        <div class="arrows">
+            <button id="prev"><</button>
+            <button id="next">></button>
+        </div>
+        <!-- time running -->
+        <div class="time"></div>
+    </div>
+
+    <script src="cha.js"></script>
+</body>
+</html>
